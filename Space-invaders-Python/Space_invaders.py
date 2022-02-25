@@ -22,7 +22,7 @@ from time import time
 ##Initialisation et declaration de variables methode .height et .width de PhotoImage ne fonctionne pas donc oblige de hardcode les dimensions Partie
 Partie_en_cours=False
 Partie_Perdu=True
-ViesInit=300
+ViesInit=3
 
 #Canevas
 hauteur=480
@@ -30,31 +30,31 @@ largeur=640
 
 #vaisseau
 largeur_vaisseau=30
-hauteur_vaisseau=32
+hauteur_vaisseau=28
 posX=largeur/2
 posY=hauteur-hauteur_vaisseau-5
 
 #Aliens
-largeur_alien=22      
-hauteur_alien=16
-ecart_alien=10
+largeur_alien=36      
+hauteur_alien=26
+ecart_alien=16
 hauteur_alien_ligne1=50
-nbre_alien_par_ligne=15
+nbre_alien_par_ligne=6
 descente_alien=10
 VitesseDeplacement=10
 VitesseAlien=0.5
 AccelerationAlien=0.05
 
 #Protections
-nbre_protections=4
-posY_protections=posY-35
-largeur_protections=1.5*largeur_vaisseau
+nbre_protections=3
+posY_protections=posY-50
+largeur_protections=2*largeur_vaisseau
 hauteur_protections=15
 resistance_protections=5
 
 #tirs allies et ennemies
 VitesseTir= 1
-tps_entre_tir_alien=50  #rester au dessus de 50 pour eviter de planter
+tps_entre_tir_alien=750  #rester au dessus de 50 pour eviter de planter
 Tirs=[]
 TempsTir=0
 TirsAlien=[]
@@ -85,10 +85,8 @@ class vaisseau:
         
     def Affichage(self):
         canevas.coords(self.apparence,self.x,self.y)
-        
-        
+                
     def ViePerdue(self):
-        canevas.itemconfig(self.apparence,image=ImageDestroy)
         mw.after(500,self.RetourApparenceNormale)
         
     def RetourApparenceNormale(self):
@@ -213,7 +211,7 @@ class Protections:
         self.x=largeur*self.Compteur/(nbre_protections+1)
         Protections.y=posY_protections
         self.Resistance=resistance_protections
-        self.Apparence=canevas.create_rectangle(self.x,self.y,self.x+largeur_protections,self.y+hauteur_protections,width=2,outline='purple',fill='white')
+        self.Apparence=canevas.create_rectangle(self.x,self.y,self.x+largeur_protections,self.y+hauteur_protections,width=2, outline='purple',fill='white')
         self.VieProtection=canevas.create_text(self.x+largeur_protections/2,self.y+hauteur_protections/2,text=str(self.Resistance),fill='red')
         
     def Update(self):
@@ -263,9 +261,6 @@ def Tir_Alien():
             mw.after(tps_entre_tir_alien,Tir_Alien)
         else:
             mw.after(1,Tir_Alien)
-
-
-
         
             
 def AffichageVies(Vies):
@@ -350,10 +345,9 @@ def Points(pts):
 
 mw=tk.Tk()
 
-ImageVaisseau=tk.PhotoImage(file='images/vaisseau.gif')
-ImageDestroy=tk.PhotoImage(file='images/vaisseaumort.gif')
-ImageAlien=tk.PhotoImage(file='images/invader.gif')
-ImageFond=tk.PhotoImage(file='images/space.gif')
+ImageVaisseau=tk.PhotoImage(file='vaisseau.gif') 
+ImageAlien=tk.PhotoImage(file='alien.gif')
+ImageFond=tk.PhotoImage(file='earth.gif')
 
 score=tk.Label(mw,text='Score: 0')
 score.grid(row=1,column=1)
@@ -369,8 +363,6 @@ canevas.bind('<Key>',Clavier)
 
 BoutonJouer=tk.Button(mw,text='Jouer',command=NouvellePartie)
 BoutonJouer.grid(row=0,column=1)
-
-
 
 BoutonQuitter=tk.Button(mw,text='Quitter',command=mw.destroy)
 BoutonQuitter.grid(row=0,column=2)
